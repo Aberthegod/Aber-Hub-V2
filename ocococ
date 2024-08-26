@@ -80,9 +80,17 @@ local Section = FarmingTab:AddSection({
 
 FarmingTab:AddToggle({
 	Name = "Equip!",
-	Default = false,
+	Tooll = false,
 	Callback = function(Value)
-
+        Tooll = true
+	while Tooll do
+		wait(1)
+		for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+			if v.Name == "Double Weight" then v:Activate()
+				v.Parent = game.Players.LocalPlayer.Character
+			end
+		end
+	end
 		OrionLib:MakeNotification({
             Name = "Equip Activated.",
             Content = "Equip Weights "..LocalPlayer.Name.."!",
@@ -90,126 +98,4 @@ FarmingTab:AddToggle({
             Time = 5
         })
 	end    
-})
-
--- Amount of Tools Button
-FarmingTab:AddButton({
-   Name = "Amount Of Tools",
-   Callback = function()
-      local num = 0
-      for i,v in pairs(LocalPlayer.Character:GetChildren()) do
-         if v:IsA("DoubleWeight") then
-            num = num + 1
-         end
-      end
-      OrionLib:MakeNotification({
-         Name = "Number Of Weights",
-         Content = "Number Of Weights: "..num,
-         Image = "rbxassetid://4483345998",
-         Time = 5
-      })
-   end
-})
-
-local Tab = Window:MakeTab({
-    Name = "RT",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
- })
-
-Tab:AddButton({
-   Name = "Small",
-   Callback = function()
--- Define the maximum and minimum scaling values for each body part
-local maxValues = {
-   BodyDepthScale = 2,
-   BodyHeightScale = 2,
-   BodyWidthScale = 2,
-   HeadScale = 2,
-}
-
-local minValues = {
-   BodyDepthScale = 0.5,
-   BodyHeightScale = 0.5,
-   BodyWidthScale = 0.5,
-   HeadScale = 0.5,
-}
-
--- Loop through each body part and set a random scaling value within the defined range
-for part, maxValue in pairs(maxValues) do
-   local minValue = minValues[part] or 0
-   
-   -- Randomly generate a scaling value within the range
-   local scaleValue = math.random() * (maxValue - minValue) + minValue
-   
-   -- Set the scaling value for the body part
-   local humanoid = game.Players.LocalPlayer.Character.Humanoid
-   if humanoid[part] then
-       humanoid[part].Value = scaleValue
-   else
-       warn("Invalid body part: " .. part)
-   end
-end
-
-   end
-})
-
-Tab:AddButton({
-   Name = "Fps",
-   Callback = function()
-      -- This script improves performance and reduces visual quality in Roblox games.
-
-local DecalsYeeted = true -- When this is on, games may look worse, but FPS may increase by at least 20.
-local Game = game
-local Workspace = Game:GetService("Workspace")
-local Lighting = Game:GetService("Lighting")
-local Terrain = Workspace.Terrain
-local Settings = settings().Rendering
-local Descendants = Game:GetDescendants()
-
-Terrain.WaterWaveSize = 0
-Terrain.WaterWaveSpeed = 0
-Terrain.WaterReflectance = 0
-Terrain.WaterTransparency = 0
-Terrain.Decoration = false -- Disable terrain decorations for performance boost
-
-Lighting.GlobalShadows = false
-Lighting.FogEnd = 9e9
-Lighting.Brightness = 0
-Lighting.ColorShift_Bottom = Color3.new(0, 0, 0) -- Make bottom darker
-Lighting.ColorShift_Top = Color3.new(1, 1, 1) -- Make top brighter
-Lighting.Ambient = Color3.new(1, 1, 1) -- Make ambient color white
-
-Settings.QualityLevel = Enum.QualityLevel.Level01
-
-for _, descendant in ipairs(Descendants) do
-   if descendant:IsA("BasePart") then
-       descendant.Material = Enum.Material.Plastic
-       descendant.Reflectance = 0
-       descendant.CastShadow = false -- Disable shadow casting for performance boost
-   elseif descendant:IsA("Decal") and DecalsYeeted then
-       descendant.Transparency = 1
-   elseif descendant:IsA("ParticleEmitter") or descendant:IsA("Trail") then
-       descendant.Lifetime = NumberRange.new(0)
-   elseif descendant:IsA("Explosion") then
-       descendant.BlastPressure = 1
-       descendant.BlastRadius = 1
-   end
-end
-
-for _, effect in ipairs(Lighting:GetChildren()) do
-   if effect:IsA("PostEffect") then
-       effect.Enabled = false
-   end
-end
-
--- Disable unnecessary services and events for performance boost
-Game:GetService("Players").CharacterAutoLoads = false
-Game:GetService("RunService").Heartbeat:Connect(function()
-    Workspace:FlushDeferredLights()
-end)
-Game:GetService("ReplicatedFirst").DefaultLoadingGuiEnabled = false
-Game:GetService("StarterGui").ResetPlayerGuiOnSpawn = false
-Game:GetService("StarterGui").SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
-end
 })
