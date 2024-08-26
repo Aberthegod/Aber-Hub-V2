@@ -97,5 +97,14 @@ FarmingTab:AddToggle({
             Image = "rbxassetid://4483345998",
             Time = 5
         })
+
+    else
+        Tooll = false
+        OrionLib:MakeNotification({
+            Name = "Equip Deactivated.",
+            Content = "Equip Weights "..LocalPlayer.Name.."!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
 	end    
 })
