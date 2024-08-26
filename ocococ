@@ -62,15 +62,15 @@ FarmingTab:AddButton({
 })
 
 FarmingTab:AddButton({
-	Name = "Stop Farming",
+	Name = "Stop Farming!",
 	Callback = function()
-      	getgenv().tool = false
-          OrionLib:MakeNotification({
-            Name = "Farming Deactivated.",
-            Content = "Stopped Farming "..LocalPlayer.Name.."!",
-            Image = "rbxassetid://4483345998",
-            Time = 5
-        })
+        getgenv().tool = false
+        OrionLib:MakeNotification({
+          Name = "Farming Deactivated.",
+          Content = "Stopped Farming "..LocalPlayer.Name.."!",
+          Image = "rbxassetid://4483345998",
+          Time = 5
+      })
   	end    
 })
 
