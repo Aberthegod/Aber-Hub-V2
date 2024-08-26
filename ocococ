@@ -78,36 +78,20 @@ local Section = FarmingTab:AddSection({
 	Name = "Equip Weights"
 })
 
-FarmingTab:AddButton({
+Tab:AddToggle({
 	Name = "Equip!",
-	Callback = function()
-        _G.Equip = true
-        while _G.Equip do
-            wait()
-            for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                if v.Name == "Double Weight" then v:Activate()
-                    v.Parent = game.Players.LocalPlayer.Character
-                end
-            end
-        end
-        OrionLib:MakeNotification({
-            Name = "Equip Activated.",
-            Content = "Equipped Weights "..LocalPlayer.Name.."!",
-            Image = "rbxassetid://4483345998",
-            Time = 5
-        })
-  	end    
+	_G.Equip = false,
+	Callback = function(Value)
+		_G.Equip = true
+	while _G.Equip do
+		wait()
+		for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+			if v.Name == "Double Weight" then v:Activate()
+				v.Parent = game.Players.LocalPlayer.Character
+			end
+		end
+	end
+	end    
 })
 
-FarmingTab:AddButton({
-	Name = "UnEquip!",
-	Callback = function()
-        _G.Equip = false
-        OrionLib:MakeNotification({
-            Name = "Equip Deactivated.",
-            Content = "unEquipped Weights "..LocalPlayer.Name.."!",
-            Image = "rbxassetid://4483345998",
-            Time = 5
-        })
-  	end    
-})
+OrionLib:Init()
