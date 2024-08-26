@@ -40,6 +40,12 @@ FarmingTab:AddButton({
     Name = "Farm",
     Callback = function()
         getgenv().tool = true
+        OrionLib:MakeNotification({
+            Name = "Farming Activated.",
+            Content = "Farming "..LocalPlayer.Name.."!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
         local lastFired = 0
         while true do
             if tick() - lastFired >= 0.6 then
@@ -47,12 +53,6 @@ FarmingTab:AddButton({
                 for i,v in pairs(LocalPlayer.Character:GetChildren()) do
                     if v:IsA("Tool") then
                         v:Activate()
-                        OrionLib:MakeNotification({
-                            Name = "Farming Activated.",
-                            Content = "Farming "..LocalPlayer.Name.."!",
-                            Image = "rbxassetid://4483345998",
-                            Time = 5
-                        })
                     end
                 end
             end
@@ -61,7 +61,7 @@ FarmingTab:AddButton({
     end
 })
 
-Tab:AddButton({
+FarmingTab:AddButton({
 	Name = "Stop Farming",
 	Callback = function()
       	getgenv().tool = false
@@ -78,7 +78,7 @@ local Section = FarmingTab:AddSection({
 	Name = "Equip Weights"
 })
 
-Tab:AddToggle({
+FarmingTab:AddToggle({
 	Name = "Equip!",
 	Default = false,
 	Callback = function(Value)
