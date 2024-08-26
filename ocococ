@@ -1,19 +1,19 @@
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local whitelisted = {
-   "abercke04"
-}
+local RunService = game:GetService("RunService")
 
+-- Whitelist check
+local whitelisted = { "abercke04" }
 if table.find(whitelisted, LocalPlayer.Name) then
    print("Welcome")
 else
    LocalPlayer:Kick()
 end
 
--- Ui Lib
+-- Load Orion Library
 local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source'))()
 
--- Window
+-- Create the main window
 local Window = OrionLib:MakeWindow({
    Name = "Zaza Hub - Owner Version",
    HidePremium = false,
@@ -21,36 +21,37 @@ local Window = OrionLib:MakeWindow({
    ConfigFolder = "OrionTest"
 })
 
--- Farming Tab
+-- Create Farming Tab
 local FarmingTab = Window:MakeTab({
    Name = "Farming",
    Icon = "rbxassetid://4483345998",
    PremiumOnly = false
 })
 
--- Farming Section
+-- Create Farming Section
 local FarmingSection = FarmingTab:AddSection({
    Name = "Farming"
 })
 
 -- Farming Button
-local RunService = game:GetService("RunService")
+local farmingActive = false
 
 FarmingTab:AddButton({
     Name = "Farm",
     Callback = function()
-        getgenv().tool = true
+        if farmingActive then return end -- Prevent multiple farming loops from starting
+        farmingActive = true
         OrionLib:MakeNotification({
             Name = "Farming Activated.",
-            Content = "Farming "..LocalPlayer.Name.."!",
+            Content = "Farming " .. LocalPlayer.Name .. "!",
             Image = "rbxassetid://4483345998",
             Time = 5
         })
         local lastFired = 0
-        while true do
+        while farmingActive do
             if tick() - lastFired >= 0.6 then
                 lastFired = tick()
-                for i,v in pairs(LocalPlayer.Character:GetChildren()) do
+                for _, v in pairs(LocalPlayer.Character:GetChildren()) do
                     if v:IsA("Tool") then
                         v:Activate()
                     end
@@ -62,36 +63,38 @@ FarmingTab:AddButton({
 })
 
 FarmingTab:AddButton({
-	Name = "Stop Farming!",
-	Callback = function()
-        getgenv().tool = false
+    Name = "Stop Farming!",
+    Callback = function()
+        farmingActive = false
         OrionLib:MakeNotification({
           Name = "Farming Deactivated.",
-          Content = "Stopped Farming "..LocalPlayer.Name.."!",
+          Content = "Stopped Farming " .. LocalPlayer.Name .. "!",
           Image = "rbxassetid://4483345998",
           Time = 5
-      })
-  	end    
+        })
+    end    
 })
 
+-- Equip Weights Section
 local Section = FarmingTab:AddSection({
-	Name = "Equip Weights"
+    Name = "Equip Weights"
 })
 
-Tab:AddToggle({
-	Name = "Equip!",
-	_G.Equip = false,
-	Callback = function(Value)
-		_G.Equip = true
-	while _G.Equip do
-		wait()
-		for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-			if v.Name == "Double Weight" then v:Activate()
-				v.Parent = game.Players.LocalPlayer.Character
-			end
-		end
-	end
-	end    
+FarmingTab:AddToggle({
+    Name = "Equip!",
+    Default = false,
+    Callback = function(Value)
+        _G.Equip = Value
+        while _G.Equip do
+            wait()
+            for _, v in pairs(LocalPlayer.Backpack:GetChildren()) do
+                if v.Name == "Double Weight" then
+                    v.Parent = LocalPlayer.Character
+                    v:Activate()
+                end
+            end
+        end
+    end    
 })
 
 OrionLib:Init()
