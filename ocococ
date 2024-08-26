@@ -98,3 +98,16 @@ FarmingTab:AddButton({
         })
   	end    
 })
+
+FarmingTab:AddButton({
+	Name = "UnEquip!",
+	Callback = function()
+        _G.Equip = false
+        OrionLib:MakeNotification({
+            Name = "Equip Deactivated.",
+            Content = "unEquipped Weights "..LocalPlayer.Name.."!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+  	end    
+})
